@@ -4,11 +4,21 @@ const { createRecord, readRecord, readRecords, createDummyRecords } = require('.
 const router = express.Router();
 
 router.post('/create', async (req, res) => {
+  console.log(req.body);
   try {
-    const { id, hash, metadata, owner } = req.body;
-    await createRecord(id, hash, metadata, owner);
+    console.log("API CREATE");
+    const {
+      id, userId, docId, userData, docData,
+      amount, slotTime, slotDate, date, cancelled, payment, isCompleted, action
+    } = req.body;
+    await createRecord(
+      id, userId, docId, userData, docData,
+      amount, slotTime, slotDate, date, cancelled, payment, isCompleted, action
+    );
     res.status(201).json({ message: 'Record created successfully' });
   } catch (err) {
+    console.log("I AM SHOWING ERROR");
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -30,7 +40,7 @@ router.get('/get', async (req, res) => {
     res.status(200).json(result);
   } catch (err) {
     // res.status(404).json({ error: `${err}`});
-    res.status(404).json({error: "No records found"});
+    res.status(404).json({ error: "No records found" });
   }
 });
 
